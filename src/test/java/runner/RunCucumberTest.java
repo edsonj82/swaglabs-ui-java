@@ -6,10 +6,10 @@ import io.cucumber.junit.CucumberOptions; // <-- Novo pacote
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    features = {"src/test/resources/features"}, // <-- Adicione as chaves { } aqui
-    tags = "~@ignore",                         // No Cucumber 7, tags usam uma String simples sem chaves
+    features = {"src/test/resources/features/authentication.feature"}, // <-- APONTE DIRETO PARA O ARQUIVO
+    tags = "~@ignore",
     glue = {"steps"},
-    plugin = {"pretty", "html:target/cucumber-reports.html"}, // Ajustado para gerar o arquivo .html corretamente
+    plugin = {"pretty", "html:target/cucumber-reports.html"},
     monochrome = true
 )
 public class RunCucumberTest {

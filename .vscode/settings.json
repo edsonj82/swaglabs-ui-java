@@ -1,3 +1,21 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.jdt.ls.java.home": "/home/edson/.jdk/jdk-25.0.2",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-25",
+            "path": "/home/edson/.jdk/jdk-25.0.2",
+            "default": true
+        }
+    ],
+    "java.test.config": {
+        "vmArgs": [
+            "-Djava.awt.headless=false"
+        ],
+        "env": {
+            "DISPLAY": ":0"
+        }
+    },
+    "java.test.defaultConfig": "swaglabs-tests",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

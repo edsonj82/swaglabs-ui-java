@@ -1,40 +1,73 @@
 package steps;
 
-import org.openqa.selenium.By; // Adicione este import se ainda não tiver
-import org.openqa.selenium.WebDriver; // <-- IMPORTAÇÃO DO WEBDRIVER QUE FALTAVA
-import org.openqa.selenium.chrome.ChromeDriver;
-// import org.openqa.selenium.chrome.ChromeOptions;
-
+import io.cucumber.java.After;
 import io.cucumber.java.pt.Dado;
-// import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class Authentication {
 
-    // 1. O driver precisa ser declarado EXATAMENTE aqui
     private WebDriver driver;
 
     @Dado("^que o usuário está na página inicial de login do Swag Labs$")
-    public void que_o_usuário_está_na_página_inicial_de_login_do_Swag_Labs() {
-        // Usa o 'this.' para garantir que estamos instanciando a variável global da classe
-        this.driver = new ChromeDriver();
+    public void abrirPaginaDeLogin() {
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        this.driver = new ChromeDriver(options);
+        this.driver.manage().window().maximize();
         this.driver.get("https://www.saucedemo.com/");
     }
 
-    // 2. Os métodos precisam receber os parâmetros String da Feature entre os parênteses
     @Quando("^o usuário preenche o campo \"([^\"]*)\" com \"([^\"]*)\"$")
-    public void o_usuário_preenche_o_campo_com(String campo, String valor) {
-        this.driver.findElement(By.id("user-name")).sendKeys(valor);
+    public void preencherCampo(String campo, String valor) {
+        String fieldId = campo.equalsIgnoreCase("Username") ? "user-name" : "password";
+        this.driver.findElement(By.id(fieldId)).sendKeys(valor);
     }
 
     @Quando("^preenche o campo \"([^\"]*)\" com \"([^\"]*)\"$")
-    public void preenche_o_campo_com(String campo, String valor) {
-        this.driver.findElement(By.id("password")).sendKeys(valor);
+    public void preencherCampoE(String campo, String valor) {
+        String fieldId = campo.equalsIgnoreCase("Username") ? "user-name" : "password";
+        this.driver.findElement(By.id(fieldId)).sendKeys(valor);
     }
 
     @Quando("^clica no botão \"([^\"]*)\"$")
-    public void clica_no_botão(String botao) {
+    public void clicarBotao(String botao) {
         this.driver.findElement(By.id("login-button")).click();
+    }
+
+    @Então("^deve ser redirecionado para a vitrine de produtos da plataforma$")
+    public void verificarRedirecionamentoParaInventario() {
+        Assert.assertTrue(
+            "URL esperada contendo 'inventory', mas foi: " + this.driver.getCurrentUrl(),
+            this.driver.getCurrentUrl().contains("inventory")
+        );
+    }
+
+    @Então("^deve visualizar a mensagem de erro \"([^\"]*)\"$")
+    public void verificarMensagemDeErro(String mensagem) {
+        String textoEsperado = mensagem.endsWith("...")
+            ? mensagem.substring(0, mensagem.length() - 3)
+            : mensagem;
+        String textoErro = this.driver.findElement(By.cssSelector("[data-test='error']")).getText();
+        Assert.assertTrue(
+            "Mensagem esperada: '" + mensagem + "' não encontrada em: '" + textoErro + "'",
+            textoErro.contains(textoEsperado)
+        );
+    }
+
+    @After
+    public void fecharNavegador() {
+        if (this.driver != null) {
+            this.driver.quit();
+        }
     }
 }
 

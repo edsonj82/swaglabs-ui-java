@@ -6,8 +6,8 @@ import io.cucumber.junit.CucumberOptions; // <-- Novo pacote
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    features = {"src/test/resources/features/authentication.feature"}, // <-- APONTE DIRETO PARA O ARQUIVO
-    tags = "~@ignore",
+    features = {"src/test/resources/features/authentication.feature"},
+    tags = "not @ignore",
     glue = {"steps"},
     plugin = {"pretty", "html:target/cucumber-reports.html"},
     monochrome = true

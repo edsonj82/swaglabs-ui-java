@@ -6,9 +6,9 @@ import io.cucumber.junit.CucumberOptions; // <-- Novo pacote
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    features = {"src/test/resources/features/authentication.feature"},
+    features = {"src/test/resources/features"},
     tags = "not @ignore",
-    glue = {"steps"},
+    glue = {"steps", "support"},
     plugin = {"pretty", "html:target/cucumber-reports.html"},
     monochrome = true
 )

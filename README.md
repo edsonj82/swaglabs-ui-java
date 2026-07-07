@@ -30,14 +30,20 @@ A arquitetura do projeto foi modularizada para garantir alta reusabilidade de c�
 │       │   │   └── RunCucumberTest.java
 │       │   └── 📂 steps        # Implementação em Java (Step Definitions) dos cenários BDD
 │       │       ├── AuthenticationSteps.java
-│       │       └── InventorySteps.java
+│       │       ├── InventorySteps.java
+│       │       ├── CartSteps.java
+│       │       └── CheckoutSteps.java
 │       └── 📂 resources
 │           ├── 📂 features     # Especificações de cenários de negócio em Gherkin (.feature)
 │           │   ├── authentication.feature
-│           │   └── inventory.feature
+│           │   ├── inventory.feature
+│           │   ├── cart.feature
+│           │   └── checkout.feature
 │           └── 📂 schemas      # Arquivos JSON Schema para validação estrita de contrato
 │               ├── auth_success_schema.json
-│               └── inventory_list_schema.json
+│               ├── inventory_list_schema.json
+│               ├── cart_state_schema.json
+│               └── checkout_summary_schema.json
 └── pom.xml                     # Gerenciamento de dependências, plugins de compilação e Surefire
 ```
 ## 🧪 Cobertura de Cenários Detalhada

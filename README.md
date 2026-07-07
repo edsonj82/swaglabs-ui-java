@@ -62,9 +62,25 @@ A arquitetura do projeto foi modularizada para garantir alta reusabilidade de c�
 * **Exceções de Negócio & Contrato (Exceptions):** Validação de payloads de checkout com campos obrigatórios ausentes (Postal Code em branco, nome nulo), falhas de conversão de tipos de dados nos campos de endereço e comportamento da API ao processar um checkout com o carrinho inteiramente vazio.
 
 ## 🚀 Como Executar os Testes
-* **Pré-requisitos:** 
-1. Ter o JDK (Java Development Kit) devidamente instalado e configurado nas variáveis de ambiente (JAVA_HOME).
 
+**Pré-requisitos:** 
+1. Ter o **JDK (Java Development Kit)** devidamente instalado e configurado nas variáveis de ambiente (JAVA_HOME).
+2. **Ter o Apache Maven** instalado e configurado no PATH do sistema.
+
+**1. Clonando o Repositório**
 ```bash
-npm install -g @usebruno/cli
+git clone [https://github.com/seu-usuario/swaglabs-api-automation.git](https://github.com/seu-usuario/swaglabs-api-automation.git)
+cd swaglabs-api-automation
+```
+
+**2. Executando toda a Suite de Testes via Linha de Comando (Maven)**
+Para rodar todos os cenários mapeados no projeto compilando as dependências do zero:
+```bash
+mvn clean test
+```
+
+**3. Executando um Runner ou Classe Específica**
+Caso queira disparar especificamente o executor do Cucumber ignorando travas padrão:
+```bash
+mvn test -Dtest=runner.RunCucumberTest
 ```

@@ -39,7 +39,7 @@ A arquitetura do projeto foi modularizada para garantir alta reusabilidade de c�
 │               ├── auth_success_schema.json
 │               └── inventory_list_schema.json
 └── pom.xml                     # Gerenciamento de dependências, plugins de compilação e Surefire
-
+```
 ## 🧪 Cobertura de Cenários Detalhada
 ### 🔐 Domínio: Authentication
 * **Fluxos Funcionais (Success):** Autenticação de usuários válidos (standard_user, performance_glitch_user), geração e integridade de tokens ou cookies de sessão e tempos de resposta sob carga.
@@ -51,9 +51,20 @@ A arquitetura do projeto foi modularizada para garantir alta reusabilidade de c�
 
 * **Exceções de Negócio & Contrato (Exceptions):** Requisições de inventário sem autenticação prévia (validação de HTTP 401 Unauthorized), paginações com limites inválidos e requisições malformadas.
 
+### 🛒 Domínio: Cart (Carrinho de Compras)
+* **Fluxos Funcionais (Success):** Adição de múltiplos produtos ao carrinho, persistência do estado do carrinho por sessão de usuário, atualização de quantidades e remoção limpa de itens.
+
+* **Exceções de Negócio & Contrato (Exceptions):** Tentativa de adicionar itens com IDs inexistentes, envio de quantidades negativas no payload do carrinho e persistência de dados com payloads corrompidos.
+
+### 💳 Domínio: Checkout (Finalização de Compra)
+* **Fluxos Funcionais (Success):** Envio de dados de faturamento válidos (First Name, Last Name, Postal Code), cálculo correto de taxas e impostos sobre o subtotal, fechamento de ordem com sucesso (201 Created ou 200 OK) e limpeza automática do carrinho.
+
+* **Exceções de Negócio & Contrato (Exceptions):** Validação de payloads de checkout com campos obrigatórios ausentes (Postal Code em branco, nome nulo), falhas de conversão de tipos de dados nos campos de endereço e comportamento da API ao processar um checkout com o carrinho inteiramente vazio.
+
 ## 🚀 Como Executar os Testes
 * **Pré-requisitos:** 
-1. Certifique-se de ter o Node.js instalado na sua máquina e o CLI global do Bruno:
+1. Ter o JDK (Java Development Kit) devidamente instalado e configurado nas variáveis de ambiente (JAVA_HOME).
+
 ```bash
 npm install -g @usebruno/cli
 ```

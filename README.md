@@ -84,3 +84,24 @@ Caso queira disparar especificamente o executor do Cucumber ignorando travas pad
 ```bash
 mvn test -Dtest=runner.RunCucumberTest
 ```
+
+**4. Executando via IDE (VS Code / IntelliJ)**
+* Abra o arquivo src/test/java/runner/RunCucumberTest.java.
+* Clique no atalho visual Run Test (Code Lens) posicionado logo acima da linha de declaração da classe (public class RunCucumberTest).
+
+## 📊 Relatórios e Asserções Técnicas
+Cada cenário executado pelo Rest Assured implementa validações robustas divididas em 4 pilares:
+
+* **Verificação de Infraestrutura:** Validação de tempo de resposta limite (Response Time inferior a 1200ms) e presença de headers de segurança e cache obrigatórios.
+
+* **Código de Status HTTP Semânticos:** Garantia do cumprimento do protocolo REST (Ex: 200 OK para consultas efetuadas, 400 Bad Request para payloads corrompidos e 401 Unauthorized para acessos não autenticados).
+
+* **Validação de Tipo do Content-Type:** Garantia do retorno estruturado estritamente em application/json; charset=utf-8.
+
+* **Validação Estrita de Contrato (JSON Schema Validation):** Uso do plugin do Rest Assured para confrontar a estrutura do JSON retornado contra os schemas salvos na pasta resources/schemas. Propriedades ausentes ou alterações de tipagem quebram o teste imediatamente (fail-fast).
+
+---
+## 👨‍💻 Autor
+
+**Edson José dos Santos**  
+SDET (Software Development Engineer in Test) & Performance Enthusiast

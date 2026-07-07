@@ -1,71 +1,71 @@
-# SwagLabs API Automation - Rest Assured & Cucumber 🚀
+# SwagLabs UI Automation - Java, Selenium & Cucumber 🚀
 
-Este repositório contém a suite de automação de testes de API para a plataforma **SwagLabs (SauceDemo API)**, desenvolvida utilizando **Rest Assured** com **Java**, integrada ao **Cucumber** para escrita de cenários em comportamento BDD (Behavior-Driven Development) e gerenciada via **Maven**.
+Este repositório contém a suite de automação de testes de ponta a ponta (E2E) para a interface web da plataforma **SwagLabs (SauceDemo)**. O projeto foi desenvolvido em **Java**, utilizando **Selenium WebDriver** para manipulação dos elementos web, **Cucumber** para a escrita de cenários em formato BDD (Behavior-Driven Development) e **Maven** como gerenciador de dependências.
 
-O projeto foi estruturado seguindo as melhores práticas de Engenharia de Qualidade, adotando o padrão de arquitetura de camadas para testes de API, isolando as requisições base, especificações de contrato (JSON Schemas) e validações estritas de fluxos funcionais e de exceção.
+A arquitetura adota as melhores práticas de Engenharia de Qualidade, aplicando o padrão de projeto **Page Object Model (POM)** para isolar a lógica de mapeamento e interação com os elementos visuais das definições de passos dos testes.
 
 ---
 
 ## 🛠️ Tecnologias e Ferramentas
 
-* **Java 17 / 25**: Linguagem base para desenvolvimento da suite de testes.
-* **Rest Assured**: Biblioteca nativa Java para validação, envio de requisições HTTP e asserções de serviços REST.
-* **Cucumber JVM**: Framework de BDD para tradução de critérios de aceite em cenários automatizados em formato Gherkin.
-* **Maven**: Gerenciador de dependências e ciclo de vida do projeto (`pom.xml`).
-* **JUnit 4 / 5**: Executor oficial dos testes e suporte à orquestração dos Runners.
-* **Hamcrest**: Matchers avançados para asserções fluidas de payloads de resposta.
+* **Java 17 / 25**: Linguagem base para desenvolvimento da suite.
+* **Selenium WebDriver**: Framework de automação para execução de comandos nativos nos navegadores web.
+* **Cucumber JVM**: Framework BDD para tradução de critérios de aceite e cenários de negócios em testes automatizados executáveis (Gherkin).
+* **Maven**: Gerenciador de ciclo de vida e dependências do projeto (`pom.xml`).
+* **JUnit**: Executor oficial de testes responsável por orquestrar o Runner do Cucumber.
 
 ---
 
-## 📂 Estrutura do Projeto e Camadas
+## 📂 Estrutura do Projeto (Page Object Model)
 
-A arquitetura do projeto foi modularizada para garantir alta reusabilidade de código e separação estrita de responsabilidades:
+A arquitetura do projeto divide rigidamente as responsabilidades entre páginas, contextos de driver e definições de passos:
 
 ```bash
-📂 SWAGLABS-API-AUTOMATION
+📂 SWAGLABS
 ├── 📂 src
 │   └── 📂 test
 │       ├── 📂 java
-│       │   ├── 📂 runner       # Executores oficiais do Cucumber (JUnit Runners)
-│       │   │   └── RunCucumberTest.java
-│       │   └── 📂 steps        # Implementação em Java (Step Definitions) dos cenários BDD
-│       │       ├── AuthenticationSteps.java
-│       │       ├── InventorySteps.java
-│       │       ├── CartSteps.java
-│       │       └── CheckoutSteps.java
+│       │   └── 📂 com.example (ou pacote base correspondente)
+│       │       ├── 📂 pages         # Mapeamento de elementos e ações da tela (Page Objects)
+│       │       │   ├── LoginPage.java
+│       │       │   ├── InventoryPage.java
+│       │       │   ├── CartPage.java
+│       │       │   └── CheckoutPage.java
+│       │       ├── 📂 runner        # Executor oficial dos testes do Cucumber
+│       │       │   └── RunCucumberTest.java
+│       │       ├── 📂 steps         # Implementação textual dos passos (Step Definitions)
+│       │       │   ├── Authentication.java
+│       │       │   ├── InventorySteps.java
+│       │       │   ├── CartSteps.java
+│       │       │   └── CheckoutSteps.java
+│       │       └── 📂 support       # Inicialização do navegador e controle do ciclo de vida
+│       │           └── DriverContext.java
 │       └── 📂 resources
-│           ├── 📂 features     # Especificações de cenários de negócio em Gherkin (.feature)
-│           │   ├── authentication.feature
-│           │   ├── inventory.feature
-│           │   ├── cart.feature
-│           │   └── checkout.feature
-│           └── 📂 schemas      # Arquivos JSON Schema para validação estrita de contrato
-│               ├── auth_success_schema.json
-│               ├── inventory_list_schema.json
-│               ├── cart_state_schema.json
-│               └── checkout_summary_schema.json
-└── pom.xml                     # Gerenciamento de dependências, plugins de compilação e Surefire
+│           └── 📂 features        # Cenários de comportamento escritos em Gherkin (.feature)
+│               ├── authentication.feature
+│               ├── inventory.feature
+│               ├── cart.feature
+│               └── checkout.feature
+└── pom.xml                        # Configurações do ecossistema Maven e dependências do Selenium/Cucumber
 ```
 ## 🧪 Cobertura de Cenários Detalhada
-### 🔐 Domínio: Authentication
-* **Fluxos Funcionais (Success):** Autenticação de usuários válidos (standard_user, performance_glitch_user), geração e integridade de tokens ou cookies de sessão e tempos de resposta sob carga.
+### 🔐 Autenticação (authentication.feature)
+* **Fluxo Principal:** Login com usuários válidos (standard_user, performance_glitch_user) e redirecionamento correto para a vitrine de produtos.
 
-* **Exceções de Negócio & Contrato (Exceptions):** Tentativas de login com usuários bloqueados (locked_out_user), payloads com credenciais em branco, senhas inválidas e validação de mensagens semânticas de erro retornadas pelo servidor.
+* **Fluxo de Exceção:** Validação de mensagens de erro amigáveis ao tentar logar com credenciais inválidas, campos em branco ou com o usuário bloqueado (locked_out_user).
 
-### 📦 Domínio: Inventory (Produtos e Estoque)
-* **Fluxos Funcionais (Success):** Listagem completa de produtos, filtros por categorias (preço, nome alfabético), integridade dos dados estruturados de inventário.
+### 📦 Vitrine e Produtos (inventory.feature)
+* **Fluxo Principal:** Navegação pela listagem de produtos, validação visual da disposição dos itens e comportamento de filtros/ordenação na vitrine.
 
-* **Exceções de Negócio & Contrato (Exceptions):** Requisições de inventário sem autenticação prévia (validação de HTTP 401 Unauthorized), paginações com limites inválidos e requisições malformadas.
+### 🛒 Carrinho de Compras (cart.feature)
+* **Fluxo Principal:** Adição de produtos como "Sauce Labs Backpack" e "Sauce Labs Bike Light", persistência visual dos itens no carrinho, funcionalidade do botão "Continuar Comprando" e remoção correta de itens limpando o carrinho.
 
-### 🛒 Domínio: Cart (Carrinho de Compras)
-* **Fluxos Funcionais (Success):** Adição de múltiplos produtos ao carrinho, persistência do estado do carrinho por sessão de usuário, atualização de quantidades e remoção limpa de itens.
+* **Fluxo de Exceção:** Tentativa de adicionar itens com IDs inexistentes, envio de quantidades negativas no payload do carrinho e persistência de dados com payloads corrompidos.
 
-* **Exceções de Negócio & Contrato (Exceptions):** Tentativa de adicionar itens com IDs inexistentes, envio de quantidades negativas no payload do carrinho e persistência de dados com payloads corrompidos.
+### 💳 Finalização de Compra (checkout.feature)
+* **Fluxo Principal:** Preenchimento completo do formulário de entrega (Nome, Sobrenome e CEP), avanço para a tela de sumário, confirmação de pedido com sucesso e retorno para a página inicial através do botão "Back Home".
 
-### 💳 Domínio: Checkout (Finalização de Compra)
-* **Fluxos Funcionais (Success):** Envio de dados de faturamento válidos (First Name, Last Name, Postal Code), cálculo correto de taxas e impostos sobre o subtotal, fechamento de ordem com sucesso (201 Created ou 200 OK) e limpeza automática do carrinho.
-
-* **Exceções de Negócio & Contrato (Exceptions):** Validação de payloads de checkout com campos obrigatórios ausentes (Postal Code em branco, nome nulo), falhas de conversão de tipos de dados nos campos de endereço e comportamento da API ao processar um checkout com o carrinho inteiramente vazio.
+* **Fluxo de Exceção:** Tentativas de checkout contendo campos obrigatórios em branco na etapa de informações de entrega e tratamento de mensagens de erro da interface.
 
 ## 🚀 Como Executar os Testes
 
